@@ -1,0 +1,38 @@
+project:
+  name: MarathiSense
+  seed: 42
+  dataset_id: 499w76zjn2
+  dataset_version: 1
+  dataset_license: CC BY 4.0
+data:
+  raw_dir: data/raw
+  processed_dir: data/processed
+  file: null
+  expected_columns: [sentence, target_word, lemma, pos, sense_id, gloss, label]
+  test_size: 0.15
+  validation_size: 0.15
+baseline:
+  max_features: 100000
+  word_ngram_range: [1, 2]
+  char_ngram_range: [2, 5]
+  C: 2.0
+  max_iter: 2000
+transformer:
+  # Verified checkpoint candidates are documented in README; set explicitly after review.
+  checkpoint: google/muril-base-cased
+  # Sized for a 4 GiB laptop GPU: LoRA plus gradient checkpointing keeps optimizer state small.
+  max_length: 192
+  batch_size: 1
+  gradient_accumulation_steps: 8
+  gradient_checkpointing: true
+  use_lora: true
+  lora_rank: 8
+  lora_alpha: 16
+  lora_dropout: 0.1
+  epochs: 3
+  learning_rate: 2.0e-5
+  weight_decay: 0.01
+  warmup_ratio: 0.1
+  patience: 2
+  output_dir: checkpoints/muril
+
